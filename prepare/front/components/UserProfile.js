@@ -1,37 +1,32 @@
 import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Card, Avatar, Button } from 'antd';
-import Link from 'next/link';
+import {Avatar, Button, Card} from "antd";
+import PropTypes from "prop-types";
 
-import { logoutRequestAction } from '../reducers/user';
+const UserProfile = ({ setIsLoggedIn }) => {
 
-const UserProfile = () => {
-  const dispatch = useDispatch();
-  const { me, logOutLoading } = useSelector((state) => state.user);
+    const onLogout = useCallback(() => {
+        setIsLoggedIn(false);
+    }, []);
 
-  const onLogOut = useCallback(() => {
-    dispatch(logoutRequestAction());
-  }, []);
+    return (
+        <Card
+            actions={[
+                <div key="twitter">짹짹<br/>0</div>,
+                <div key="followings">팔로잉<br/>0</div>,
+                <div key="followers">팔로워<br/>0</div>,
+            ]}>
+            <Card.Meta
+                avatar={<Avatar>ZC</Avatar>}
+                title="boxak"
+            />
+            <Button onClick={onLogout}>로그아웃</Button>
+        </Card>
+    )
 
-  return (
-    <Card
-      actions={[
-        <div key="twit"><Link href={`/user/${me.id}`}><a>짹짹<br />{me.Posts.length}</a></Link></div>,
-        <div key="followings"><Link href="/profile"><a>팔로잉<br />{me.Followings.length}</a></Link></div>,
-        <div key="followings"><Link href="/profile"><a>팔로워<br />{me.Followers.length}</a></Link></div>,
-      ]}
-    >
-      <Card.Meta
-        avatar={(
-          <Link href={`/user/${me.id}`}>
-            <a><Avatar>{me.nickname[0]}</Avatar></a>
-          </Link>
-        )}
-        title={me.nickname}
-      />
-      <Button onClick={onLogOut} loading={logOutLoading}>로그아웃</Button>
-    </Card>
-  );
-};
+}
+
+UserProfile.propTypes = {
+    setIsLoggedIn : PropTypes.node.isRequired,
+}
 
 export default UserProfile;
